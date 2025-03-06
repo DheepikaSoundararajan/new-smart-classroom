@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant - {{ department }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>AI Assistant - {{ department }}</h1>
+        <form method="POST" enctype="multipart/form-data">
+            <label for="prompt">Enter your prompt:</label>
+            <textarea id="prompt" name="prompt" rows="4" required></textarea>
+
+            <label for="pdf_file">Upload PDF:</label>
+            <input type="file" id="pdf_file" name="pdf_file" accept=".pdf" required>
+
+            <button type="submit">Submit</button>
+        </form>
+
+        {% if show_content %}
+        <h2>AI Response:</h2>
+        <div id="response">{{ response | safe }}</div>
+
+        <button onclick="speakText()">🔊 Play</button>
+        <button onclick="pauseSpeech()">⏸ Pause</button>
+        <button onclick="stopSpeech()">⏹ Stop</button>
+        {% endif %}
+    </div>
+
+    <script>
+        let speech = new SpeechSynthesisUtterance();
+        function speakText() {
+            speech.text = document.getElementById('response').innerText;
+            window.speechSynthesis.speak(speech);
+        }
+        function pauseSpeech() {
+            window.speechSynthesis.pause();
+        }
+        function stopSpeech() {
+            window.speechSynthesis.cancel();
+        }
+    </script>
+
+</body>
+</html>
